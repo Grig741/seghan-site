@@ -1,0 +1,454 @@
+<!doctype html><html lang="ru"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Приглашение на свадьбу, крестины или юбилей по ссылке: личные ссылки гостям, ответы «приду / не смогу», три языка, 40 тем."><meta property="og:type" content="website"><meta property="og:title" content="SEGHAN · онлайн-приглашения, Ереван"><meta property="og:description" content="Приглашение на свадьбу, крестины или юбилей по ссылке: личные ссылки гостям, ответы «приду / не смогу», три языка, 40 тем."><meta property="og:image" content="/static/og.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SEGHAN</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Golos+Text:wght@400;500;600;700&family=Noto+Serif+Armenian:wght@300;400;600&family=Noto+Sans+Armenian:wght@400;600&display=swap">
+<style>
+:root{
+  /* page: tuff stone, pomegranate, apricot */
+  --bg:#f1e6df; --bg2:#e8d8cf; --fg:#2b1715; --mute:#6b524c; --line:#d6bfb4; --panel:#fbf4ee;
+  --accent:#8f1d2c; --accent-fg:#fdf3ea; --apricot:#c9661d; --orn:#b9978a;
+  --shadow:rgba(70,22,18,.32); --shadow2:rgba(70,22,18,.14);
+  --display:"Cormorant","Noto Serif Armenian",Georgia,"Times New Roman",serif;
+  --arm:"Noto Serif Armenian","Cormorant",Georgia,serif;
+  --body:"Golos Text","Noto Sans Armenian",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  /* invitation palettes: printed surfaces, identical in both themes */
+  --p1-bg:#f9f0e6; --p1-ink:#3a1218; --p1-acc:#8f1d2c; --p1-soft:#efdccf; --p1-two:#c9661d;
+  --p2-bg:#fcf1dc; --p2-ink:#3b2410; --p2-acc:#a94f14; --p2-soft:#f3dfbb; --p2-two:#6f7a2e;
+  --p3-bg:#e6d3cc; --p3-ink:#33201e; --p3-acc:#6f332f; --p3-soft:#d8bfb6; --p3-two:#a8603a;
+  --p4-bg:#1c1516; --p4-ink:#f2e7dc; --p4-acc:#e2a864; --p4-soft:#30252a; --p4-two:#c9475a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171011;--bg2:#1f1617;--fg:#f3e6dc;--mute:#b89f95;--line:#3a2a2a;--panel:#211718;--accent:#e2606f;--accent-fg:#1f0a0d;--apricot:#eda05a;--orn:#5a4340;--shadow:rgba(0,0,0,.6);--shadow2:rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171011;--bg2:#1f1617;--fg:#f3e6dc;--mute:#b89f95;--line:#3a2a2a;--panel:#211718;--accent:#e2606f;--accent-fg:#1f0a0d;--apricot:#eda05a;--orn:#5a4340;--shadow:rgba(0,0,0,.6);--shadow2:rgba(0,0,0,.35);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.page{overflow:hidden;position:relative}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px;position:relative}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* generative ornament */
+.bigros{position:absolute;width:760px;height:760px;right:-240px;top:-200px;color:var(--orn);opacity:.55;pointer-events:none}
+.bigros svg{width:100%;height:100%;display:block}
+.frieze{color:var(--orn);height:26px;display:block;width:100%}
+
+nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:22px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:24px;font-weight:600;letter-spacing:.24em}
+.brand svg{width:30px;height:30px;color:var(--accent);flex:none}
+.brand small{font-family:var(--arm);font-weight:400;font-size:15px;letter-spacing:.04em;color:var(--mute)}
+.tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-areas:"head stage" "desk stage";column-gap:64px;row-gap:28px;padding-block:20px 72px;align-items:start}
+.head{grid-area:head;min-width:0}
+.desk{grid-area:desk;min-width:0}
+.stage{grid-area:stage;min-width:0;position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);display:grid;justify-items:center;gap:16px}
+
+.armword{font-family:var(--arm);font-weight:300;font-size:clamp(4.2rem,13vw,10rem);line-height:.95;letter-spacing:-.02em;color:var(--accent);margin:8px 0 0;overflow-wrap:anywhere;font-size:clamp(4.2rem,13.5vw,9rem);white-space:nowrap}
+.armword span{color:var(--apricot)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(1.9rem,3.6vw,2.9rem);line-height:1.06;margin:14px 0 14px;max-width:20ch;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.sub{color:var(--mute);max-width:52ch;margin:0}
+
+/* the invitation: an arched leaf, like a manuscript canon table */
+.leaf{position:relative;width:100%;max-width:384px}
+.leaf::before,.leaf::after{content:"";position:absolute;inset:0;border-radius:200px 200px 14px 14px;background:var(--bg2);border:1px solid var(--line)}
+.leaf::before{transform:rotate(-3.5deg) translate(-8px,6px)}
+.leaf::after{transform:rotate(2.5deg) translate(9px,4px)}
+.card{--c-bg:var(--p1-bg);--c-ink:var(--p1-ink);--c-acc:var(--p1-acc);--c-soft:var(--p1-soft);--c-two:var(--p1-two);
+  position:relative;z-index:1;background:var(--c-bg);color:var(--c-ink);border-radius:200px 200px 14px 14px;padding:54px 30px 30px;text-align:center;
+  display:flex;flex-direction:column;gap:18px;min-height:660px;overflow:hidden;box-shadow:0 44px 70px -38px var(--shadow),0 6px 18px -8px var(--shadow2)}
+.card[data-p="2"]{--c-bg:var(--p2-bg);--c-ink:var(--p2-ink);--c-acc:var(--p2-acc);--c-soft:var(--p2-soft);--c-two:var(--p2-two)}
+.card[data-p="3"]{--c-bg:var(--p3-bg);--c-ink:var(--p3-ink);--c-acc:var(--p3-acc);--c-soft:var(--p3-soft);--c-two:var(--p3-two)}
+.card[data-p="4"]{--c-bg:var(--p4-bg);--c-ink:var(--p4-ink);--c-acc:var(--p4-acc);--c-soft:var(--p4-soft);--c-two:var(--p4-two)}
+.card::before{content:"";position:absolute;inset:9px;border:1px solid var(--c-acc);opacity:.55;border-radius:192px 192px 8px 8px;pointer-events:none}
+.card::after{content:"";position:absolute;inset:14px;border:1px solid var(--c-acc);opacity:.22;border-radius:188px 188px 5px 5px;pointer-events:none}
+.card>*{position:relative}
+.card .fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.orn{width:104px;height:104px;margin:0 auto;color:var(--c-acc)}
+.orn svg{width:100%;height:100%;display:block}
+.orn.spin svg{animation:spin 1.6s cubic-bezier(.2,.7,.2,1)}
+@keyframes spin{from{transform:rotate(0) scale(1)}40%{transform:rotate(140deg) scale(1.12)}to{transform:rotate(360deg) scale(1)}}
+.lead{font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin:0;text-wrap:balance;padding-inline:8px}
+.card:lang(hy) .lead{font-family:var(--arm);font-size:14px;letter-spacing:.05em;text-transform:none}
+.names{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(2.5rem,10vw,3.5rem);line-height:1;margin:0;overflow-wrap:anywhere}
+.names i{display:block;font-family:var(--arm);font-style:normal;font-size:.42em;color:var(--c-two);margin:6px 0}
+.rule{display:flex;align-items:center;gap:10px;color:var(--c-acc);margin:0 18px}
+.rule::before,.rule::after{content:"";flex:1;height:1px;background:currentColor;opacity:.4}
+.rule b{width:7px;height:7px;background:currentColor;transform:rotate(45deg)}
+.when{font-family:var(--display);font-size:1.2rem;margin:0}
+.when b{display:block;font-size:3rem;font-weight:500;line-height:1;color:var(--c-acc)}
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--c-soft);font-variant-numeric:tabular-nums}
+.cd div{padding:10px 2px;min-width:0}
+.cd div+div{border-left:1px solid var(--c-soft)}
+.cd b{display:block;font-family:var(--display);font-size:1.6rem;font-weight:600;line-height:1.1}
+.cd span{font-size:11px;letter-spacing:.06em;opacity:.75}
+.place{margin:0;font-size:14px}
+.place span{opacity:.7}
+.place b{display:block;font-family:var(--display);font-size:1.35rem;font-weight:600;overflow-wrap:anywhere}
+.rsvp{margin-top:auto;padding-top:6px}
+.rsvp p{margin:0 0 10px;font-weight:600}
+.rb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.rb button{font:inherit;font-weight:600;font-size:15px;min-height:46px;padding:10px 8px;border-radius:6px;cursor:pointer;border:1px solid var(--c-acc);background:none;color:var(--c-acc);transition:transform .15s}
+.rb button.yes{background:var(--c-acc);color:var(--c-bg)}
+.rb button:active{transform:scale(.97)}
+.rb button:focus-visible{outline-color:var(--c-ink)}
+.thanks{font-family:var(--display);font-style:italic;font-size:1.4rem;margin:0;padding-block:8px}
+.note{font-size:13px;color:var(--mute);text-align:center;margin:0;max-width:34ch;position:relative;z-index:1}
+
+/* order desk */
+.form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label,.lab{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.f input{width:100%;min-width:0;font:inherit;font-size:16px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 13px;min-height:46px}
+.f input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:15px;min-height:42px;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.sw{width:14px;height:14px;transform:rotate(45deg);display:inline-block;border:1px solid var(--line);flex:none}
+.order{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;min-height:52px;background:var(--accent);color:var(--accent-fg);text-decoration:none;font-weight:700;padding:14px 26px;border-radius:6px;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(1px) scale(.98)}
+.price{font-family:var(--display);font-size:1.7rem;line-height:1.1}
+.price small{font-family:var(--body);font-size:13px;color:var(--mute);display:block;margin-top:2px}
+
+/* alphabet band */
+.abc{font-family:var(--arm);font-weight:300;font-size:clamp(1.6rem,4vw,2.6rem);white-space:nowrap;overflow:hidden;color:var(--orn);border-block:1px solid var(--line);padding-block:10px;letter-spacing:.32em;text-align:center;user-select:none}
+.abc b{font-weight:300;color:var(--accent)}
+
+section{padding-block:72px}
+.split{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:48px;align-items:start}
+.split>*{min-width:0}
+h2{font-family:var(--display);font-weight:500;font-size:clamp(2rem,4vw,3rem);line-height:1.04;margin:0 0 10px;text-wrap:balance}
+.kick{font-family:var(--arm);color:var(--accent);font-size:1.05rem;margin:0 0 6px}
+.h2sub{color:var(--mute);margin:0;max-width:34ch}
+
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:grid;grid-template-columns:84px minmax(0,1fr);gap:8px 20px;padding-block:22px;border-top:1px solid var(--line);align-items:start}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps .g{font-family:var(--arm);font-weight:300;font-size:4rem;line-height:.9;color:var(--accent)}
+.steps li:nth-child(2) .g{color:var(--apricot)}
+.steps h3,.plan h3{font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.15;margin:0 0 4px}
+.steps p{margin:0;color:var(--mute);max-width:52ch}
+
+.plans{border-top:1px solid var(--fg)}
+.plan{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr) auto;gap:8px 24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.plan>*{min-width:0}
+.plan ul{margin:0;padding:0;list-style:none;color:var(--mute)}
+.plan li{padding-left:18px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;background:var(--apricot);transform:rotate(45deg)}
+.amt{font-family:var(--display);font-size:2.3rem;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.amt small{font-family:var(--arm);font-size:1.1rem}
+.plan.hot{background:var(--accent);color:var(--accent-fg);padding-inline:22px;margin-inline:-22px;border-radius:10px;border-bottom-color:transparent}
+.plan.hot ul{color:var(--accent-fg)}
+.plan.hot li::before{background:var(--accent-fg)}
+.plan .pick{display:block;font-family:var(--body);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-top:4px}
+.plan{cursor:pointer;transition:transform .15s}.plan:active{transform:scale(.995)}.plan:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.plan:not(.hot){padding-inline:22px;margin-inline:-22px}
+.bar{display:none}
+.contact{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;color:var(--mute);margin-top:26px}
+.contact code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;color:var(--fg);background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:6px;user-select:all;overflow-wrap:anywhere;min-width:0}
+.copy{font:inherit;font-size:15px;min-height:42px;background:none;border:1px solid var(--fg);color:var(--fg);border-radius:6px;padding:8px 14px;cursor:pointer}
+
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding-block:18px;font-family:var(--display);font-weight:600;font-size:1.35rem;line-height:1.2}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:10px;height:10px;border-right:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);transform:rotate(45deg);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(-135deg)}
+.faq p{margin:0 0 20px;color:var(--mute);max-width:60ch}
+
+footer{padding-block:26px 44px;color:var(--mute);font-size:14px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer span:first-child{font-family:var(--arm);color:var(--fg)}
+
+@media (max-width:940px){
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "stage" "desk";row-gap:32px;padding-bottom:56px}
+  .stage{position:static}
+  .split{grid-template-columns:minmax(0,1fr);gap:26px}
+  .bigros{width:520px;height:520px;right:-220px;top:-150px}
+  section{padding-block:56px}
+}
+@media (max-width:620px){
+  .wrap{padding-inline:16px}
+  nav .tag{display:none}
+  .plan{grid-template-columns:minmax(0,1fr) auto}
+  .plan ul{grid-column:1/-1;grid-row:2}
+  .plan.hot,.plan:not(.hot){padding-inline:16px;margin-inline:-8px}
+  .bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--panel);border-top:1px solid var(--line)}
+  .bar b{font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .bar small{display:block;font-size:11px;color:var(--mute);font-weight:400;font-family:var(--body)}
+  .bar .btn{padding:12px 18px;white-space:nowrap}
+  footer{padding-bottom:96px}
+  .steps li{grid-template-columns:56px minmax(0,1fr);gap:8px 14px}
+  .steps .g{font-size:3rem}
+  .abc{letter-spacing:.2em}
+}
+@media (max-width:460px){
+  .form{grid-template-columns:minmax(0,1fr);padding:16px}
+  .card{padding:48px 22px 26px;min-height:0}
+  .amt{font-size:1.9rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="page">
+<div class="bigros" id="bigros" aria-hidden="true"></div>
+<div class="wrap">
+<nav>
+  <div class="brand"><span id="logo" aria-hidden="true"></span>SEGHAN <small lang="hy">սեղան</small></div>
+  <a class="btn" href="/business" style="white-space:nowrap;min-height:42px;padding:9px 14px;background:none;color:var(--accent);border:1px solid var(--accent);font-weight:600">Для бизнеса</a>
+</nav>
+
+<main class="hero">
+  <div class="head">
+    <div class="tag">Свадьба · Ереван</div>
+    <p class="armword" lang="hy" aria-hidden="true">Սե<span>ղ</span>ան</p>
+    <h1>Каждый гость получает <em>свою ссылку</em>. Вы видите, кто молчит.</h1>
+    <p class="sub"><strong>Платите после того, как увидите готовое.</strong> Приглашение обращается к гостю по имени. Гость отвечает «приду» и пишет, сколько взрослых и детей. Вы видите, кто открыл, кто ответил и кто молчит, и напоминаете одной кнопкой в WhatsApp. Залу отдаёте точное число гостей. Три языка: армянский, русский, английский.</p>
+  </div>
+
+  <div class="stage">
+    <div class="leaf">
+      <article class="card" id="card" data-p="1" aria-label="Пример приглашения">
+        <canvas class="fx" id="fx" aria-hidden="true"></canvas>
+        <div class="orn" id="orn" aria-hidden="true"></div>
+        <p class="lead" id="cLead"></p>
+        <p class="names" id="cNames"></p>
+        <div class="rule" aria-hidden="true"><b></b></div>
+        <p class="when" id="cWhen"></p>
+        <div class="cd" id="cd" role="timer" aria-live="off"></div>
+        <p class="place" id="cPlace"></p>
+        <div class="rsvp" id="rsvp"></div>
+      </article>
+    </div>
+    <p class="note">Это живой пример: меняйте поля формы и нажмите «приду». Имена, место и дата являются примером.</p>
+  </div>
+
+  <div class="desk">
+    <form class="form" id="form" autocomplete="off">
+      <div class="f full" hidden><span class="lab" id="evL">Событие</span><div class="seg" id="event" role="group" aria-labelledby="evL"></div></div>
+      <div class="f" id="f1"><label for="n1" id="n1L">Имя 1</label><input id="n1" value="Aram" maxlength="24"></div>
+      <div class="f" id="f2"><label for="n2">Имя 2</label><input id="n2" value="Ani" maxlength="24"></div>
+      <div class="f"><label for="dt">Дата и время</label><input id="dt" type="datetime-local" value="2027-05-22T17:00"></div>
+      <div class="f"><label for="pl">Место</label><input id="pl" value="Ресторан «Нур»" maxlength="40"></div>
+      <div class="f full"><span class="lab" id="lgL">Язык приглашения</span><div class="seg" id="lang" role="group" aria-labelledby="lgL"></div></div>
+      <div class="f full"><span class="lab" id="stL">Стиль</span><div class="seg" id="style" role="group" aria-labelledby="stL"></div></div>
+    </form>
+    <div class="order">
+      <a class="btn" id="cta" target="_blank" rel="noopener">Заказать такое приглашение</a>
+      <div class="price"><span id="priceNow">8 000 ֏</span><small><span id="planNow">Всё включено</span> · оплата после того, как увидите готовое</small></div>
+    </div>
+    <form class="form" id="oform" novalidate style="margin-top:22px;grid-template-columns:minmax(0,1fr)">
+      <div class="f full"><label for="ocontact">Ваш Telegram или телефон</label><input id="ocontact" maxlength="160" autocomplete="tel" placeholder="@username или +374 …"><span id="oerr" role="alert" style="font-size:13px;color:var(--accent)"></span></div>
+      <button class="btn" id="osend" type="submit" style="border:0;font:inherit;font-weight:700;cursor:pointer;justify-content:center">Отправить заявку</button>
+      <p id="ook" role="status" hidden style="margin:0;font-family:var(--display);font-size:1.3rem">Заявка принята. Напишем вам в течение дня и пришлём готовую ссылку.</p>
+    </form>
+  </div>
+</main>
+</div>
+
+<div class="abc" lang="hy" aria-hidden="true">Ա Բ Գ Դ Ե Զ Է Ը Թ Ժ Ի Լ Խ Ծ Կ <b>Ս Ե Ղ Ա Ն</b> Ձ Ղ Ճ Մ Յ Ն Շ Ո Չ Պ Ջ Ռ Ս Տ Ց Փ Ք</div>
+
+<div class="wrap">
+<section class="split" aria-labelledby="howH">
+  <div>
+    <p class="kick" lang="hy" aria-hidden="true">Ինչպես</p>
+    <h2 id="howH">Как это работает</h2>
+    <p class="h2sub">Три шага, вся переписка в Telegram.</p>
+  </div>
+  <ol class="steps">
+    <li><div class="g" lang="hy" aria-hidden="true">Ա</div><div><h3>Пишете нам в Telegram</h3><p>Имена, дата, место, язык. Можно прямо из формы выше, данные подставятся сами.</p></div></li>
+    <li><div class="g" lang="hy" aria-hidden="true">Բ</div><div><h3>Получаете ссылку за 24 часа</h3><p>Смотрите готовое приглашение, просите правки. Платите, когда всё нравится.</p></div></li>
+    <li><div class="g" lang="hy" aria-hidden="true">Գ</div><div><h3>Рассылаете гостям</h3><p>В WhatsApp, Viber, Telegram. Ответы гостей приходят вам списком.</p></div></li>
+  </ol>
+</section>
+
+<svg class="frieze" id="frieze" aria-hidden="true"></svg>
+
+<section class="split" aria-labelledby="priceH">
+  <div>
+    <p class="kick" lang="hy" aria-hidden="true">Գներ</p>
+    <h2 id="priceH">Цены</h2>
+    <p class="h2sub">В армянских драмах. Оплата после того, как увидите готовое приглашение.</p>
+  </div>
+  <div>
+    <div class="plans">
+      <div class="plan hot" data-plan="1" role="button" tabindex="0" aria-pressed="true"><h3>Свадьба<span class="pick">Всё включено</span></h3><ul><li>Личная ссылка каждому гостю</li><li>Кто открыл, кто ответил, кто молчит, напоминание в WhatsApp</li><li>Взрослые и дети отдельно, число для зала</li><li>Три языка, история пары, 8 тем</li></ul><div class="amt">8 000 <small>֏</small></div></div>
+    </div>
+    <div class="contact">Telegram: <code id="tgText"></code><button class="copy" id="copy" type="button">Скопировать</button></div>
+  </div>
+</section>
+
+<svg class="frieze" id="frieze2" aria-hidden="true"></svg>
+
+<section class="split" aria-labelledby="faqH">
+  <div>
+    <p class="kick" lang="hy" aria-hidden="true">Հարցեր</p>
+    <h2 id="faqH">Частые вопросы</h2>
+  </div>
+  <div class="faq">
+    <details open><summary>Что нужно прислать?</summary><p>Имена, дату и время, место и язык приглашения. Для тарифа «Свадьба» ещё фото пары и музыку.</p></details>
+    <details><summary>Гостям нужно что-то устанавливать?</summary><p>Нет. Приглашение открывается по ссылке в браузере телефона, ссылку можно отправить в WhatsApp, Viber или Telegram.</p></details>
+    <details><summary>Когда платить?</summary><p>После того как увидите готовое приглашение и вам всё понравится.</p></details>
+    <details><summary>Можно ли что-то поменять?</summary><p>Да, после получения ссылки вы просите правки. В тарифе «Под ключ» правки принимаются до дня события.</p></details>
+    <details><summary>Как я узнаю, кто придёт?</summary><p>Гости нажимают «приду» или «не смогу» прямо в приглашении, ответы приходят вам списком.</p></details>
+  </div>
+</section>
+
+<div class="bar"><div><b id="barPrice">8 000 ֏</b><small>оплата после результата</small></div><a class="btn" id="cta2" target="_blank" rel="noopener">Заказать</a></div>
+<footer><span lang="hy">Սեղան · Երևան</span><span>SEGHAN · Ереван · Имена, место и дата выше являются примером.</span></footer>
+</div>
+</div>
+
+<script>
+var TG="Seghan_armenia_bot";
+var I18N={
+  hy:{lead:"Սիրով հրավիրում ենք Ձեզ մեր հարսանիքին",and:"և",months:["հունվարի","փետրվարի","մարտի","ապրիլի","մայիսի","հունիսի","հուլիսի","օգոստոսի","սեպտեմբերի","հոկտեմբերի","նոյեմբերի","դեկտեմբերի"],at:"ժամը",units:["օր","ժամ","րոպե","վրկ"],place:"Վայրը",q:"Կմասնակցե՞ք",yes:"Կգամ",no:"Չեմ կարող",ty:"Շնորհակալություն, սպասում ենք Ձեզ",tn:"Ափսոս, կկարոտենք Ձեզ",done:"Արդեն եկավ մեր օրը",city:"Երևան"},
+  ru:{lead:"С любовью приглашаем вас на нашу свадьбу",and:"и",months:["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],at:"в",units:["дн","ч","мин","сек"],place:"Место",q:"Вы придёте?",yes:"Приду",no:"Не смогу",ty:"Спасибо, ждём вас",tn:"Жаль, будем скучать",done:"Наш день настал",city:"Ереван"},
+  en:{lead:"With love, we invite you to our wedding",and:"&",months:["January","February","March","April","May","June","July","August","September","October","November","December"],at:"at",units:["days","hrs","min","sec"],place:"Venue",q:"Will you join us?",yes:"I'll be there",no:"Can't make it",ty:"Thank you, see you there",tn:"We'll miss you",done:"Our day is here",city:"Yerevan"}
+};
+var LEADS={
+  christening:{hy:"Սիրով հրավիրում ենք Ձեզ մեր բալիկի կնունքին",ru:"С любовью приглашаем вас на крестины нашего малыша",en:"With love, we invite you to our baby's christening"},
+  anniversary:{hy:"Սիրով հրավիրում ենք Ձեզ մեր հոբելյանին",ru:"С любовью приглашаем вас на наш юбилей",en:"With love, we invite you to our anniversary celebration"}
+};
+var EVENTS=[["wedding","Свадьба"]];
+var LANGS=[["hy","Հայերեն"],["ru","Русский"],["en","English"]];
+var STYLES=[["1","Гранат","var(--p1-acc)"],["2","Абрикос","var(--p2-acc)"],["3","Туф","var(--p3-bg)"],["4","Ночь","var(--p4-bg)"]];
+var FOLD={"1":8,"2":6,"3":12,"4":10};
+var PLANS={"1":["Свадьба","8 000 ֏"]};
+var S={ev:"wedding",lang:"hy",p:"1",plan:"1",answer:null};
+var $=function(id){return document.getElementById(id)};
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+/* generative rosette: n-fold eternity whorl, star lattice, petal ring */
+function rosette(n,thin){
+  var st=360/n,f=function(x){return x.toFixed(2)},o='<svg viewBox="-50 -50 100 100" fill="none" stroke="currentColor" stroke-width="'+(thin?".35":".9")+'" stroke-linejoin="round">';
+  o+='<circle r="48.5"/><circle r="45.6" stroke-width="'+(thin?".2":".45")+'"/><circle r="30"/><circle r="14"/>';
+  var star="",k=2,i,a,b;
+  for(i=0;i<n;i++){
+    a=i*st;
+    o+='<path transform="rotate('+f(a)+')" d="M0 0A7 7 0 0 1 0 -14"/>';
+    o+='<path transform="rotate('+f(a)+')" d="M0 -30C6.5 -35 6.5 -41 0 -45.6C-6.5 -41 -6.5 -35 0 -30Z" fill="currentColor" fill-opacity=".13"/>';
+    o+='<circle transform="rotate('+f(a+st/2)+')" cy="-38" r="1.5" fill="currentColor" stroke="none"/>';
+    a=(i*st-90)*Math.PI/180;b=((i+k)*st-90)*Math.PI/180;
+    star+="M"+f(30*Math.cos(a))+" "+f(30*Math.sin(a))+"L"+f(30*Math.cos(b))+" "+f(30*Math.sin(b));
+  }
+  return o+'<path d="'+star+'"/><circle r="2.2" fill="currentColor" stroke="none"/></svg>';
+}
+function frieze(el,id){
+  el.innerHTML='<defs><pattern id="'+id+'" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M0 13L13 0L26 13L13 26Z M6.5 13L13 6.5L19.5 13L13 19.5Z" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="13" cy="13" r="1.6" fill="currentColor"/><circle cx="0" cy="13" r="1.6" fill="currentColor"/><circle cx="26" cy="13" r="1.6" fill="currentColor"/></pattern></defs><rect width="100%" height="26" fill="url(#'+id+')"/>';
+}
+
+function seg(el,items,key){
+  el.innerHTML=items.map(function(it){
+    var sw=it[2]?'<span class="sw" style="background:'+it[2]+'"></span>':"";
+    return '<button type="button" data-v="'+it[0]+'" aria-pressed="'+(S[key]===it[0])+'">'+sw+it[1]+'</button>'}).join("");
+  el.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    S[key]=b.dataset.v;
+    el.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+    render();
+  });
+}
+function when(){var d=new Date($("dt").value);return isNaN(d)?null:d}
+function label(arr,v){for(var i=0;i<arr.length;i++)if(arr[i][0]===v)return arr[i][1];return v}
+function render(){
+  var t=I18N[S.lang],two=S.ev==="wedding",n1=$("n1").value.trim()||"…",n2=$("n2").value.trim()||"…",d=when(),pl=$("pl").value.trim()||"…";
+  var card=$("card");
+  card.dataset.p=S.p;card.lang=S.lang;
+  $("f2").hidden=!two;$("f1").classList.toggle("full",!two);
+  $("n1L").textContent=two?"Имя 1":(S.ev==="christening"?"Имя малыша":"Имя юбиляра");
+  if($("orn").dataset.n!==String(FOLD[S.p])){$("orn").dataset.n=FOLD[S.p];$("orn").innerHTML=rosette(FOLD[S.p])}
+  $("cLead").textContent=two?t.lead:LEADS[S.ev][S.lang];
+  $("cNames").innerHTML=two?esc(n1)+"<i>"+t.and+"</i>"+esc(n2):esc(n1);
+  if(d){
+    var hh=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+    $("cWhen").innerHTML=S.lang==="en"
+      ? esc(t.months[d.getMonth()])+"<b>"+d.getDate()+"</b>"+d.getFullYear()+" · "+t.at+" "+hh
+      : "<b>"+d.getDate()+"</b>"+esc(t.months[d.getMonth()])+" "+d.getFullYear()+" · "+t.at+" "+hh;
+  } else $("cWhen").textContent="";
+  $("cPlace").innerHTML="<span>"+t.place+"</span><b>"+esc(pl)+"</b>"+t.city;
+  rsvp();tick();
+  var msg="Здравствуйте! Хочу приглашение SEGHAN.\nСобытие: "+label(EVENTS,S.ev)+"\n"+(two?"Имена: "+n1+" и "+n2:"Имя: "+n1)+"\nДата: "+($("dt").value||"-").replace("T"," ")+"\nМесто: "+pl+"\nЯзык: "+S.lang.toUpperCase()+", стиль: "+label(STYLES,S.p)+"\nТариф: "+PLANS[S.plan][0]+", "+PLANS[S.plan][1];
+  $("priceNow").textContent=PLANS[S.plan][1];$("barPrice").textContent=PLANS[S.plan][1];$("planNow").textContent="Всё включено";
+  document.querySelectorAll(".plan").forEach(function(p){var on=p.dataset.plan===S.plan;p.classList.toggle("hot",on);p.setAttribute("aria-pressed",on)});
+  $("cta").href=$("cta2").href="https://t.me/"+TG+"?text="+encodeURIComponent(msg);
+}
+var back=0;
+function rsvp(){
+  var t=I18N[S.lang],r=$("rsvp");
+  if(S.answer){r.innerHTML='<p class="thanks" role="status">'+(S.answer==="y"?t.ty:t.tn)+'</p>';return}
+  r.innerHTML='<p>'+t.q+'</p><div class="rb"><button type="button" class="yes" id="ry">'+t.yes+'</button><button type="button" id="rn">'+t.no+'</button></div>';
+  $("ry").onclick=function(){S.answer="y";rsvp();burst();clearTimeout(back);back=setTimeout(function(){S.answer=null;rsvp()},6000)};
+  $("rn").onclick=function(){S.answer="n";rsvp();clearTimeout(back);back=setTimeout(function(){S.answer=null;rsvp()},2600)};
+}
+function tick(){
+  var t=I18N[S.lang],d=when(),el=$("cd");
+  if(!d){el.innerHTML="";return}
+  var ms=d-new Date();
+  if(ms<=0){el.innerHTML='<div style="grid-column:1/-1">'+t.done+'</div>';return}
+  var s=Math.floor(ms/1000),v=[Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60];
+  el.innerHTML=v.map(function(x,i){return"<div><b>"+(i?String(x).padStart(2,"0"):x)+"</b><span>"+t.units[i]+"</span></div>"}).join("");
+}
+
+/* pomegranate seeds on "yes" */
+var cv=$("fx"),cx=cv.getContext("2d"),parts=[],raf=0;
+function rgbOf(name){
+  var p=document.createElement("span");p.style.color=getComputedStyle($("card")).getPropertyValue(name).trim();
+  document.body.appendChild(p);var c=getComputedStyle(p).color;p.remove();return c;
+}
+function burst(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  var o=$("orn");o.classList.remove("spin");void o.offsetWidth;o.classList.add("spin");
+  var r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;cv.width=r.width*dpr;cv.height=r.height*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+  var cols=[rgbOf("--c-acc"),rgbOf("--c-two"),rgbOf("--c-acc")];
+  for(var i=0;i<90;i++)parts.push({x:r.width/2+(Math.random()-.5)*60,y:r.height*.9,vx:(Math.random()-.5)*8,vy:-Math.random()*11-5,a:Math.random()*6,va:(Math.random()-.5)*.25,s:3+Math.random()*4.5,l:1,c:cols[i%3]});
+  if(!raf)loop(r);
+}
+function loop(r){
+  cx.clearRect(0,0,r.width,r.height);
+  parts.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.2;p.vx*=.99;p.a+=p.va;p.l-=.009;
+    cx.save();cx.globalAlpha=Math.max(Math.min(p.l*1.6,1),0);cx.fillStyle=p.c;cx.translate(p.x,p.y);cx.rotate(p.a);
+    cx.beginPath();cx.moveTo(0,-p.s*1.5);cx.bezierCurveTo(p.s,-p.s*.3,p.s,p.s,0,p.s);cx.bezierCurveTo(-p.s,p.s,-p.s,-p.s*.3,0,-p.s*1.5);cx.fill();cx.restore()});
+  parts=parts.filter(function(p){return p.l>0&&p.y<r.height+20});
+  raf=parts.length?requestAnimationFrame(function(){loop(r)}):(cx.clearRect(0,0,r.width,r.height),0);
+}
+
+$("bigros").innerHTML=rosette(16,true);
+$("logo").innerHTML=rosette(8).replace("<svg ",'<svg aria-hidden="true" ');
+frieze($("frieze"),"fz1");frieze($("frieze2"),"fz2");
+$("tgText").textContent="@"+TG;
+function sel(){var r=document.createRange();r.selectNodeContents($("tgText"));var s=getSelection();s.removeAllRanges();s.addRange(r)}
+$("copy").onclick=function(){var b=this;try{navigator.clipboard.writeText("@"+TG).then(function(){b.textContent="Скопировано";setTimeout(function(){b.textContent="Скопировать"},2000)},function(){sel()})}catch(e){sel()}};
+$("form").addEventListener("submit",function(e){e.preventDefault()});
+["n1","n2","dt","pl"].forEach(function(id){$(id).addEventListener("input",render)});
+seg($("event"),EVENTS,"ev");seg($("lang"),LANGS,"lang");seg($("style"),STYLES,"p");
+render();setInterval(tick,1000);
+document.querySelectorAll(".plan").forEach(function(p){function pick(){S.plan=p.dataset.plan;render()}p.onclick=pick;p.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}});
+</script>
+
+<script>
+/* заявка уходит в бэкенд: POST /api/orders, в админке из неё одной кнопкой создаётся приглашение */
+(function(){
+  /* метка источника: ?from=invite ставит кнопка под каждым приглашением SEGHAN */
+  var SRC="";try{SRC=sessionStorage.getItem("hrv-src")||""}catch(e){}
+  var q=(new URLSearchParams(location.search).get("from")||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,32);
+  if(q){SRC=q;try{sessionStorage.setItem("hrv-src",q)}catch(e){}
+    fetch("/api/visits",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({source:q})}).catch(function(){});
+    history.replaceState(null,"",location.pathname)}
+  var f=document.getElementById("oform"),c=document.getElementById("ocontact"),er=document.getElementById("oerr"),b=document.getElementById("osend");
+  ["cta","cta2"].forEach(function(id){var a=document.getElementById(id);a.addEventListener("click",function(e){e.preventDefault();c.scrollIntoView({block:"center",behavior:"smooth"});c.focus({preventScroll:true})})});
+  f.addEventListener("submit",function(e){
+    e.preventDefault();er.textContent="";
+    var n1=document.getElementById("n1").value.trim(),dt=document.getElementById("dt").value;
+    if(c.value.trim().length<3){er.textContent="Оставьте Telegram или телефон, чтобы мы прислали ссылку";c.focus();return}
+    if(!n1||!dt){er.textContent="Заполните имя и дату в форме выше";return}
+    b.disabled=true;b.textContent="Отправляем…";
+    var ev={wedding:"wedding",christening:"christening",anniversary:"anniversary",baptism:"christening",jubilee:"anniversary"}[S.ev]||"wedding";
+    fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind:"client",source:SRC,contact:c.value.trim(),plan:PLANS[S.plan][0],
+      payload:{event_type:ev,name1:n1,name2:document.getElementById("n2").value.trim(),starts_at:dt,venue:document.getElementById("pl").value.trim(),lang:S.lang,style:+S.p}})})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.detail||"Ошибка");return d})})
+    .then(function(){b.hidden=true;document.getElementById("ook").hidden=false})
+    .catch(function(x){er.textContent=(x.message==="Failed to fetch"?"Нет связи с сервером. Повторите.":x.message);b.disabled=false;b.textContent="Отправить заявку"});
+  });
+})();
+</script>
+</body></html>

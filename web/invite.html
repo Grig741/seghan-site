@@ -1,0 +1,126 @@
+<!doctype html><html lang="hy"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Приглашение · SEGHAN</title><meta name="robots" content="noindex"><link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#e9dbd1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Noto+Serif+Armenian:wght@300;400;600&family=Noto+Sans+Armenian:wght@400;600&display=swap">
+<link rel="stylesheet" href="/static/invite.css">
+<style>
+.mg{max-width:420px;margin:28px auto 0;padding-inline:16px;display:grid;gap:14px;color:var(--g-ink)}
+.mg h2{margin:0;font-family:var(--display);font-size:1.6rem;font-weight:500}
+.mg .st{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--g-ink)}
+.mg .st div{padding:10px 4px 10px 0;border-bottom:1px solid var(--orn)}
+.mg .st b{display:block;font-family:var(--display);font-size:1.8rem;font-weight:500;font-variant-numeric:tabular-nums}
+.mg .st span{font-size:12px;color:var(--g-mute)}
+.mg table{width:100%;border-collapse:collapse;font-size:15px}
+.mg td{padding:9px 6px 9px 0;border-bottom:1px solid var(--orn)}
+.mg td.n{text-align:right;font-variant-numeric:tabular-nums}
+.mg .mute{color:var(--g-mute)}
+.mg code{font-size:13px;word-break:break-all;background:var(--ground2);padding:8px 10px;border-radius:6px;display:block}
+.mg button{font:inherit;min-height:44px;padding:8px 16px;border-radius:99px;border:1px solid var(--g-ink);background:none;color:var(--g-ink);font-weight:600;cursor:pointer;justify-self:start}
+.mg h3{margin:10px 0 0;font-family:var(--display);font-size:1.25rem;font-weight:600}
+.mg textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:8px;border:1px solid var(--orn);background:var(--ground2);color:var(--g-ink)}
+.mg .err{color:var(--c-acc);margin:0;font-size:14px}
+.mg .kit{margin:0;font-size:1.05rem}
+.mg .row{display:flex;flex-wrap:wrap;gap:8px}
+.seg2{display:flex;flex-wrap:wrap;gap:6px}
+.seg2 button{min-height:40px;padding:6px 12px;font-weight:500}
+.seg2 button[aria-pressed="true"]{background:var(--g-ink);color:var(--ground)}
+.gl{list-style:none;margin:0;padding:0}
+.gl li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:10px 0;border-bottom:1px solid var(--orn);align-items:center}
+.gl .nm{min-width:0;overflow-wrap:anywhere}
+.gl .chip{font-size:13px;padding:3px 10px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.gl .yes{color:var(--c-acc)}.gl .no,.gl .silent{color:var(--g-mute)}.gl .opened{color:var(--g-ink)}
+.gl .acts2{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.gl .acts2 a,.gl .acts2 button{min-height:36px;padding:4px 12px;font-size:14px;border-radius:99px;border:1px solid var(--orn);color:var(--g-ink);text-decoration:none;background:none;font-weight:500;display:inline-flex;align-items:center}
+.miss{max-width:420px;margin:80px auto;padding-inline:16px;text-align:center;color:var(--g-ink)}
+.skel{max-width:420px;height:560px;margin:60px auto 0;border-radius:210px 210px 16px 16px;background:var(--ground2)}
+</style></head><body>
+<div id="app"><div class="skel" aria-busy="true"></div></div>
+<section class="mg" id="manage" hidden>
+  <p class="mute" style="margin:0">Видно только хозяевам события</p>
+  <h2>Гости</h2>
+  <div class="st" id="mst"></div>
+  <p id="kitchen" class="kit"></p>
+  <div class="row"><button type="button" id="kcopy">Скопировать число для зала</button></div>
+  <h3>Личные ссылки</h3>
+  <p class="mute" style="margin:0">Каждый гость получает свою ссылку: приглашение обращается к нему по имени, а вы видите, кто открыл, кто ответил и кто молчит.</p>
+  <label for="glist" class="mute">Каждый гость с новой строки, телефон через запятую (по желанию)</label>
+  <textarea id="glist" rows="4" placeholder="Арам Петросян, +374 91 123456&#10;Семья Саркисян"></textarea>
+  <p class="err" id="gerr2" role="alert"></p>
+  <button type="button" id="gadd">Добавить гостей</button>
+  <div class="seg2" role="group" aria-label="Фильтр"><button type="button" id="f-all" aria-pressed="true">Все</button><button type="button" id="f-silent" aria-pressed="false">Молчат</button><button type="button" id="f-yes" aria-pressed="false">Придут</button><button type="button" id="f-no" aria-pressed="false">Не смогут</button></div>
+  <ul class="gl" id="glistv"></ul>
+  <p class="mute" id="gempty" hidden style="margin:0">Список пуст. Добавьте гостей выше, и у каждого появится своя ссылка.</p>
+  <h3>Ответы по общей ссылке</h3>
+  <table><tbody id="mrows"></tbody></table>
+  <p class="mute" id="mempty" hidden style="margin:0">Ответов по общей ссылке пока нет.</p>
+  <code id="mlink"></code><button type="button" id="mcopy">Скопировать общую ссылку</button>
+</section>
+<script src="/static/common.js"></script>
+<script src="/static/invite-engine.js"></script>
+<script>
+const slug = pathArg(), gtok = new URLSearchParams(location.search).get("g") || "";
+{ const k = new URLSearchParams(location.search).get("key"); if (k) { store.set("edit:" + slug, k); history.replaceState(null, "", location.pathname) } }
+const gk = () => { let k = store.get("gk"); if (!k) { k = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()); store.set("gk", k) } return k };
+const token = () => store.get("edit:" + slug);
+const H = () => ({ "X-Edit-Token": token() });
+let M = null, filter = "all";
+const ST = { yes: "придёт", no: "не сможет", opened: "открыл, молчит", silent: "не открывал" };
+function inviteText(g) { const inv = M.invitation; return `${g.name}, приглашаем вас! ${inv.name1}${inv.name2 ? " и " + inv.name2 : ""}: ${location.origin}/i/${slug}?g=${g.token}` }
+function waLink(g) { const t = encodeURIComponent(inviteText(g)); const ph = (g.phone || "").replace(/[^0-9]/g, ""); return ph ? `https://wa.me/${ph}?text=${t}` : `https://wa.me/?text=${t}` }
+function renderList() {
+  const rows = M.list.filter(g => filter === "all" || (filter === "silent" ? (g.status === "silent" || g.status === "opened") : g.status === filter));
+  $("#glistv").innerHTML = rows.map(g => `<li><span class="nm">${esc(g.name)}</span><span class="chip ${g.status}">${ST[g.status]}${g.status === "yes" ? " · " + g.adults + (g.children ? " + " + g.children + " дет." : "") : ""}</span>
+    <span class="acts2"><button type="button" data-copy="${g.id}">Ссылка</button><a href="${waLink(g)}" target="_blank" rel="noopener">${g.status === "silent" || g.status === "opened" ? "Напомнить в WhatsApp" : "WhatsApp"}</a><button type="button" data-del="${g.id}">Убрать</button></span></li>`).join("");
+  $("#gempty").hidden = M.list.length > 0;
+}
+async function loadManage() {
+  if (!token()) return;
+  try {
+    M = await api(`/api/invitations/${slug}/manage`, { headers: H() });
+    $("#manage").hidden = false;
+    const t = M.totals, c = M.list_counts;
+    $("#mst").innerHTML = [["Открытий", M.views], ["Придут, чел.", t.guests], ["Не смогут", t.no], ["Молчат", c.silent + c.opened]].map(([l, v]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
+    $("#kitchen").textContent = `Для зала: взрослых ${t.adults}, детей ${t.children}, всего ${t.guests}. Ещё не ответили: ${c.silent + c.opened}.`;
+    renderList();
+    const free = M.guests.filter(g => !g.listed);
+    $("#mrows").innerHTML = free.map(g => `<tr><td>${esc(g.name)}</td><td>${g.attending ? "придёт" : '<span class="mute">не сможет</span>'}</td><td class="n">${g.attending ? g.guests + (g.children ? " + " + g.children : "") : ""}</td></tr>`).join("");
+    $("#mempty").hidden = free.length > 0;
+    $("#mlink").textContent = location.origin + "/i/" + slug;
+  } catch {}
+}
+$("#mcopy").onclick = e => copyText($("#mlink").textContent, e.currentTarget);
+$("#kcopy").onclick = e => copyText($("#kitchen").textContent, e.currentTarget);
+$("#gadd").onclick = async e => {
+  const btn = e.currentTarget;
+  const lines = $("#glist").value.split("\n").map(x => x.trim()).filter(Boolean);
+  if (!lines.length) { $("#gerr2").textContent = "Впишите хотя бы одно имя"; return }
+  const guests = lines.map(l => { const i = l.lastIndexOf(","); const ph = i > 0 ? l.slice(i + 1).trim() : ""; return /\d{5,}/.test(ph.replace(/\D/g, "")) ? { name: l.slice(0, i).trim(), phone: ph } : { name: l } });
+  btn.disabled = true;
+  try { await api(`/api/invitations/${slug}/guests`, { method: "POST", headers: H(), body: { guests } }); $("#glist").value = ""; $("#gerr2").textContent = ""; await loadManage() }
+  catch (err) { $("#gerr2").textContent = err.message }
+  btn.disabled = false;
+};
+document.addEventListener("click", async e => {
+  const c = e.target.closest("[data-copy]"), d = e.target.closest("[data-del]"), f = e.target.closest(".seg2 button");
+  if (c) { const g = M.list.find(x => x.id === +c.dataset.copy); copyText(`${location.origin}/i/${slug}?g=${g.token}`, c) }
+  if (d) { await api(`/api/invitations/${slug}/guests/${d.dataset.del}`, { method: "DELETE", headers: H() }).catch(() => {}); loadManage() }
+  if (f) { filter = f.id.slice(2); document.querySelectorAll(".seg2 button").forEach(x => x.setAttribute("aria-pressed", x === f)); renderList() }
+});
+(async () => {
+  let inv;
+  try { inv = await api(`/api/invitations/${slug}${gtok ? "?g=" + encodeURIComponent(gtok) : ""}`) }
+  catch { document.getElementById("app").innerHTML = '<div class="miss"><h1>Приглашение не найдено</h1><p>Проверьте ссылку или попросите хозяев события прислать её ещё раз.</p></div>'; return }
+  document.title = inv.name1 + (inv.name2 ? " & " + inv.name2 : "");
+  HRV.mount({
+    event_type: inv.event_type, lang: inv.lang, theme: inv.theme, n1: inv.name1, n2: inv.name2, starts_at: inv.starts_at,
+    venue: inv.venue, address: inv.address, story: inv.story, program: inv.program, note: inv.message, rsvp_by: inv.rsvp_by,
+    guest_name: inv.guest ? inv.guest.name : "",
+    gift_from: inv.gift_from ? inv.gift_from.name : "", cta_url: inv.cta_url, ics_url: `/api/invitations/${slug}/ics`
+  }, {
+    root: document.getElementById("app"), storageKey: "hrv-" + slug + (gtok ? "-" + gtok : ""),
+    onRsvp: p => api(`/api/invitations/${slug}/rsvp`, { method: "POST", body: { guest_key: gk(), g: gtok, name: p.name, attending: p.attending, guests: p.guests, children: p.children || 0 } }).then(loadManage)
+  });
+  loadManage();
+  if (!token()) api(`/api/invitations/${slug}/view`, { method: "POST", body: { g: gtok } }).catch(() => {});
+})();
+</script></body></html>

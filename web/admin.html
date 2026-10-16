@@ -1,0 +1,76 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Админ-панель · SEGHAN</title><meta name="robots" content="noindex"><link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600&family=Golos+Text:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="/static/app.css"></head><body>
+<div class="wrap stack" style="gap:28px">
+  <div class="top noprint"><span class="brand">SEGHAN<small lang="hy">սեղան</small></span><button class="btn ghost sm" id="out" type="button" hidden>Выйти</button></div>
+  <form id="login" class="panel stack narrow noprint" novalidate>
+    <h1>Админ-панель</h1>
+    <div class="f" id="fkey"><label for="key">Ключ администратора</label><input id="key" type="password" class="mono" autocomplete="current-password"><span class="err" id="kerr" role="alert"></span></div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+  <main id="app" class="stack" style="gap:40px" hidden>
+    <div id="warn" class="msg bad noprint" hidden></div>
+    <section id="t-inv" class="stack" style="gap:28px">
+      <div class="stats noprint" id="s-inv"></div>
+      <div class="stack noprint"><h2>Заявки с сайта</h2>
+        <div class="tw"><table><thead><tr><th>Кто</th><th>Контакт</th><th>Что хочет</th><th>Статус</th><th></th></tr></thead><tbody id="olist"></tbody></table></div>
+        <div id="oempty" class="empty" hidden>Заявок пока нет. Они появятся здесь, когда кто-то отправит форму на сайте или на странице для бизнеса.</div>
+        <div id="omsg" class="msg" hidden></div></div>
+      <form id="newp" class="panel stack noprint" novalidate><h2>Новый партнёр</h2>
+        <div class="grid2"><div class="f"><label for="pn">Название бизнеса</label><input id="pn" required maxlength="120" placeholder="Ресторан Арарат Холл"></div>
+        <div class="f"><label for="pk">Тип</label><select id="pk"><option value="hall">Банкетный зал</option><option value="restaurant">Ресторан</option><option value="salon">Свадебный салон</option><option value="jewelry">Ювелирный</option><option value="florist">Флорист</option><option value="photo">Фотограф</option></select></div>
+        <div class="f"><label for="pc">Контакт</label><input id="pc" maxlength="160" placeholder="Telegram или телефон"></div>
+        <div class="f"><label for="pa">Цвет бренда</label><input id="pa" type="color" value="#8f1d2c"></div></div>
+        <button class="btn" type="submit">Создать партнёра</button><div id="pmsg" class="msg" hidden></div></form>
+      <div class="stack noprint"><h2>Партнёры</h2><div class="tw"><table><thead><tr><th>Партнёр</th><th>Контакт</th><th class="n">Вручить</th><th class="n">Активировано</th><th></th></tr></thead><tbody id="plist"></tbody></table></div>
+        <div id="pempty" class="empty" hidden>Партнёров пока нет. Создайте первого в форме выше, затем выпустите для него сертификаты.</div></div>
+    </section>
+
+    <section id="result" class="stack" hidden>
+      <div class="row noprint"><h2 id="rtitle" style="flex:1"></h2><button class="btn sm" id="print" type="button">Печать листа</button><button class="btn ghost sm" id="csv" type="button">Скачать CSV</button></div>
+      <p class="msg noprint">Коды показаны один раз: в базе хранится только их хеш. Распечатайте лист или скачайте CSV сейчас.</p>
+      <div class="sheet" id="sheet"></div>
+    </section>
+  </main>
+</div>
+<script src="/static/common.js"></script>
+<script>
+let key = sessionStorage.getItem("akey"), last = [];
+const EV = { wedding: "Свадьба", christening: "Крестины", anniversary: "Юбилей", engagement: "Помолвка", birthday: "День рождения" };
+const stat = (id, items) => $(id).innerHTML = items.map(([l, v]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+const note = (id, html, kind = "ok") => { const m = $(id); m.hidden = false; m.className = "msg " + kind; m.innerHTML = html };
+const inp = 'style="width:84px;min-height:38px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:4px 8px"';
+async function load() {
+  const [o, os, ps] = await Promise.all(["overview", "orders", "partners"].map(p => api("/api/admin/" + p, { key })));
+  $("#login").hidden = true; $("#app").hidden = false; $("#out").hidden = false;
+  $("#warn").hidden = !o.warnings.length; $("#warn").textContent = o.warnings.join(" ");
+  stat("#s-inv", [["Новых заявок", o.new_orders], ["Переходов с приглашений", o.from_invite.visits], ["Заявок с приглашений", o.from_invite.orders], ["Партнёров", o.partners], ["Сертификатов", o.certificates], ["Активировано", o.activated], ["Приглашений", o.invitations], ["Открытий", o.views], ["Ответов гостей", o.rsvps]]);
+  $("#olist").innerHTML = os.map(x => { const p = x.payload, what = x.kind === "business" ? `${esc(p.business || "")}<br><span class="mute">${esc(p.type || "")} · пакет «${esc(x.plan)}»</span>` : `${EV[p.event_type] || ""}: ${esc([p.name1, p.name2].filter(Boolean).join(" и "))}<br><span class="mute">${esc((p.starts_at || "").replace("T", " "))} · ${esc(p.venue || "")} · тариф «${esc(x.plan)}»</span>`;
+    const act = x.invitation_url ? `<a class="btn ghost sm" href="${x.invitation_url}" target="_blank" rel="noopener">Открыть</a>` : x.status === "done" ? "" : x.kind === "client" ? `<button class="btn sm" data-fulfil="${x.id}" type="button">Создать приглашение</button>` : `<button class="btn ghost sm" data-done="${x.id}" type="button">Закрыть</button>`;
+    return `<tr><td>${x.kind === "business" ? "Бизнес" : "Клиент"}${x.source === "invite" ? '<br><span class="pill ok">с приглашения</span>' : ""}</td><td>${esc(x.contact)}</td><td>${what}</td><td><span class="pill ${x.status === "new" ? "warn" : "ok"}">${x.status === "new" ? "новая" : "готово"}</span></td><td style="text-align:right">${act}</td></tr>` }).join("");
+  $("#oempty").hidden = os.length > 0;
+  $("#plist").innerHTML = ps.map(p => `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.contact)}</td><td class="n">${p.issued}</td><td class="n">${p.activated}</td><td><span class="row" style="justify-content:flex-end"><input aria-label="Сколько сертификатов" id="n-p${p.id}" type="number" min="1" max="500" value="10" ${inp}><button class="btn sm" data-issue="${p.id}" type="button">Выпустить</button></span></td></tr>`).join("");
+  $("#pempty").hidden = ps.length > 0;
+}
+function sheet(title, items, caption) {
+  last = items; $("#rtitle").textContent = title; $("#result").hidden = false;
+  $("#sheet").innerHTML = items.map(c => `<div class="label">${c.svg}<b>${esc(c.code)}</b><span>${esc(caption)}</span></div>`).join("");
+  $("#result").scrollIntoView({ behavior: "smooth" });
+}
+document.addEventListener("click", async e => {
+  const a = e.target.closest("[data-issue]"), f = e.target.closest("[data-fulfil]"), d = e.target.closest("[data-done]");
+  try {
+    if (a) { a.disabled = true; const r = await api(`/api/admin/partners/${a.dataset.issue}/certificates`, { method: "POST", key, body: { count: +$("#n-p" + a.dataset.issue).value } }); sheet(`Сертификаты · ${r.partner} · ${r.count} шт.`, r.certificates, "Подарок от " + r.partner); load() }
+    if (f) { f.disabled = true; const r = await api(`/api/admin/orders/${f.dataset.fulfil}/fulfil`, { method: "POST", key }); note("#omsg", `Приглашение создано. Отправьте клиенту эту ссылку: по ней он видит ответы гостей, а гостям пересылает адрес без ключа.<br><code class="key">${esc(location.origin + r.manage_url)}</code>`); load() }
+    if (d) { await api(`/api/admin/orders/${d.dataset.done}/done`, { method: "POST", key }); load() }
+  } catch (err) { note("#omsg", esc(err.message), "bad"); load().catch(() => {}) }
+});
+$("#newp").onsubmit = async e => { e.preventDefault(); try { const r = await api("/api/admin/partners", { method: "POST", key, body: { name: $("#pn").value, kind: $("#pk").value, contact: $("#pc").value, accent: $("#pa").value } }); note("#pmsg", `Партнёр создан. Ключ для кабинета (показывается один раз):<br><code class="key">${esc(r.partner_key)}</code>`); e.target.reset(); load() } catch (err) { note("#pmsg", esc(err.message), "bad") } };
+$("#print").onclick = () => window.print();
+$("#csv").onclick = () => { const rows = [["code", "url"], ...last.map(c => [c.code, c.url])]; const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" })); a.download = "certificates.csv"; a.click() };
+const start = async () => { try { await load() } catch (e) { $("#fkey").classList.add("bad"); $("#kerr").textContent = e.message; sessionStorage.removeItem("akey") } };
+$("#login").onsubmit = e => { e.preventDefault(); key = $("#key").value.trim(); sessionStorage.setItem("akey", key); start() };
+$("#out").onclick = () => { sessionStorage.removeItem("akey"); location.reload() };
+if (key) start();
+</script></body></html>

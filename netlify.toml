@@ -1,0 +1,14 @@
+# Netlify: сайт + Telegram-бот. Приглашения, ответы гостей и кабинеты работают через бэкенд (BACKEND_URL).
+[build]
+  command = "node netlify/build.mjs"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"

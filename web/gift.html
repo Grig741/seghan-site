@@ -1,0 +1,114 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Подарочный сертификат · SEGHAN</title><meta name="robots" content="noindex"><link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,400&family=Golos+Text:wght@400;600&family=Noto+Serif+Armenian:wght@300;400&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="/static/app.css"></head><body>
+<div class="wrap narrow stack" style="gap:24px">
+  <div class="top"><a class="brand" href="/">SEGHAN<small lang="hy">սեղան</small></a></div>
+  <div class="stack rise">
+    <p class="eyebrow" id="from">Подарочный сертификат</p>
+    <h1 id="title">Ваше онлайн-приглашение в подарок</h1>
+    <p class="mute" id="sub">Введите код с карточки, заполните данные события и получите готовую ссылку для гостей.</p>
+  </div>
+  <div id="state" class="msg" hidden role="status"></div>
+  <form id="form" class="panel stack rise" style="--i:1" novalidate>
+    <div class="f" id="fcode"><label for="code">Код сертификата</label><input id="code" class="mono" autocapitalize="characters" autocomplete="off" placeholder="SGN-7Q2M-K9XD" required><span class="err" id="ecode" role="alert"></span></div>
+    <div class="f"><label for="event_type">Событие</label><select id="event_type"><option value="wedding">Свадьба</option></select></div>
+    <div class="grid2">
+      <div class="f" id="fn1"><label for="name1">Имя</label><input id="name1" maxlength="60" required><span class="err" id="en1" role="alert"></span></div>
+      <div class="f"><label for="name2">Второе имя</label><input id="name2" maxlength="60"><span class="hint">Имя невесты или жениха</span></div>
+    </div>
+    <div class="f" id="fdt"><label for="starts_at">Дата и время (Ереван)</label><input id="starts_at" type="datetime-local" required><span class="err" id="edt" role="alert"></span></div>
+    <div class="f"><label for="rsvp_by">Ответить до (по желанию)</label><input id="rsvp_by" type="date"><span class="hint">Залу обычно нужно число гостей за 3 дня до банкета</span></div>
+    <div class="f"><label for="venue">Место</label><input id="venue" maxlength="120" placeholder="Название зала или ресторана"></div>
+    <div class="f"><label for="address">Адрес</label><input id="address" maxlength="200"></div>
+    <div class="f"><span class="eyebrow" id="llang">Язык приглашения</span><div class="seg" id="lang" role="group" aria-labelledby="llang"><button type="button" data-v="hy" aria-pressed="true">Հայերեն</button><button type="button" data-v="ru" aria-pressed="false">Русский</button><button type="button" data-v="en" aria-pressed="false">English</button></div></div>
+    <div class="f"><span class="eyebrow" id="lstyle">Оформление: <b id="tsel">Гранат</b></span>
+      <div class="tgrid" id="themes" role="group" aria-labelledby="lstyle"></div></div>
+    <div class="f"><label for="message">Слова для гостей</label><textarea id="message" maxlength="600"></textarea></div>
+    <fieldset class="f fs"><legend class="eyebrow">Ваша история (по желанию)</legend>
+      <p class="hint">Как познакомились, первое путешествие, предложение. Гости это любят читать.</p>
+      <div id="story" class="stack"></div>
+      <button class="btn ghost sm" type="button" id="addStory">Добавить момент</button></fieldset>
+    <fieldset class="f fs"><legend class="eyebrow">Программа дня (по желанию)</legend>
+      <div id="program" class="stack"></div>
+      <button class="btn ghost sm" type="button" id="addProg">Добавить пункт</button></fieldset>
+    <button class="btn" id="go" type="submit">Создать приглашение</button>
+  </form>
+  <div id="done" class="panel stack" hidden>
+    <h2>Приглашение готово</h2>
+    <p class="mute">Отправьте эту ссылку гостям в WhatsApp, Viber или Telegram. Ответы гостей вы увидите на той же странице с этого телефона.</p>
+    <div class="row"><code class="key" id="link"></code><button class="btn ghost sm" type="button" id="copy">Скопировать</button></div>
+    <a class="btn" id="open" href="#">Открыть приглашение</a>
+  </div>
+</div>
+<style>
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:8px}
+.tgrid button{height:54px;border-radius:20px 20px 4px 4px;border:1px solid var(--line);cursor:pointer;position:relative;padding:0}
+.tgrid button i{position:absolute;left:50%;bottom:9px;width:10px;height:10px;margin-left:-5px;transform:rotate(45deg)}
+.tgrid button[aria-pressed="true"]{outline:2px solid var(--fg);outline-offset:2px}
+.fs{border:1px solid var(--line);border-radius:10px;padding:14px;margin:0}
+.fs legend{padding:0 6px}
+.row3{display:grid;grid-template-columns:80px minmax(0,1fr);gap:8px}
+.row3 .full{grid-column:1/-1}
+.item{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
+.item input,.item select,.item textarea{width:100%;min-width:0;font:inherit;font-size:16px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+.item .del{justify-self:start;font:inherit;font-size:14px;background:none;border:0;color:var(--bad);cursor:pointer;min-height:36px}
+</style>
+<script src="/static/common.js"></script>
+<script src="/static/invite-engine.js"></script>
+<script>
+const seg = id => { const g = $("#" + id); g.onclick = e => { const b = e.target.closest("button"); if (!b) return; g.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)) }; return () => g.querySelector('[aria-pressed="true"]').dataset.v };
+const lang = seg("lang"), state = $("#state");
+let theme = 0;
+// на старте 8 лучших тем из 40: выбор за секунды
+const PICK = [0, 3, 4, 10, 11, 12, 14, 39];
+$("#themes").innerHTML = PICK.map(i => { const t = HRV.THEMES[i]; return `<button type="button" id="th-${i}" data-i="${i}" aria-pressed="${i === 0}" aria-label="${t[0]}" title="${t[0]}" style="background:${t[1]}"><i style="background:${t[3]}"></i></button>` }).join("");
+$("#themes").onclick = e => { const b = e.target.closest("button"); if (!b) return; theme = +b.dataset.i; $("#themes").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); $("#tsel").textContent = HRV.THEMES[theme][0] };
+let sid = 0;
+function addStory() {
+  if ($("#story").children.length >= 6) return; const k = sid++;
+  $("#story").insertAdjacentHTML("beforeend", `<div class="item" data-k="${k}"><div class="row3"><input aria-label="Год" id="sy${k}" maxlength="12" placeholder="2019"><input aria-label="Заголовок" id="st${k}" maxlength="80" placeholder="Первая встреча"><textarea class="full" aria-label="Текст" id="sx${k}" maxlength="400" placeholder="Где и как это было"></textarea><select class="full" aria-label="Значок" id="si${k}"><option value="cup">Кофе</option><option value="umbrella">Зонт</option><option value="home">Дом</option><option value="ring">Кольцо</option></select></div><button class="del" type="button">Убрать</button></div>`);
+}
+let pid = 0;
+function addProg() {
+  if ($("#program").children.length >= 8) return; const k = pid++;
+  $("#program").insertAdjacentHTML("beforeend", `<div class="item" data-k="${k}"><div class="row3"><input aria-label="Время" id="pt${k}" placeholder="17:00" inputmode="numeric" maxlength="5"><input aria-label="Что" id="pn${k}" maxlength="80" placeholder="Банкет"><input class="full" aria-label="Где" id="pp${k}" maxlength="120" placeholder="Название зала"></div><button class="del" type="button">Убрать</button></div>`);
+}
+$("#addStory").onclick = addStory; $("#addProg").onclick = addProg;
+document.addEventListener("click", e => { const d = e.target.closest(".del"); if (d) d.parentElement.remove() });
+const collect = () => ({
+  story: [...$("#story").children].map(el => { const k = el.dataset.k; return { year: $("#sy" + k).value.trim(), title: $("#st" + k).value.trim(), text: $("#sx" + k).value.trim(), icon: $("#si" + k).value } }).filter(x => x.title),
+  program: [...$("#program").children].map(el => { const k = el.dataset.k; return { time: $("#pt" + k).value.trim(), title: $("#pn" + k).value.trim(), place: $("#pp" + k).value.trim() } }).filter(x => x.title && /^\d{1,2}:\d{2}$/.test(x.time))
+});
+const say = (text, kind = "") => { state.hidden = !text; state.className = "msg " + kind; state.textContent = text };
+async function check(code) {
+  if (code.replace(/[^a-z0-9]/gi, "").length < 11) return;
+  try {
+    const c = await api("/api/certificates/" + encodeURIComponent(code));
+    $("#from").textContent = "Подарок от · " + c.partner.name;
+    if (c.status === "activated") { say("Этот сертификат уже активирован. Если это были вы, откройте свою ссылку на приглашение.", "bad"); $("#go").disabled = true }
+    else { say("Сертификат действителен. Заполните данные события.", "ok"); $("#go").disabled = false }
+  } catch (e) { say(e.message, "bad") }
+}
+$("#code").value = pathArg(); if ($("#code").value) check($("#code").value);
+$("#code").onchange = e => check(e.target.value);
+$("#copy").onclick = e => copyText($("#link").textContent, e.currentTarget);
+$("#form").onsubmit = async e => {
+  e.preventDefault();
+  let bad = false;
+  for (const [f, i, er, msg] of [["fcode", "code", "ecode", "Введите код с карточки"], ["fn1", "name1", "en1", "Напишите имя"], ["fdt", "starts_at", "edt", "Выберите дату и время"]]) {
+    const empty = !$("#" + i).value.trim(); $("#" + f).classList.toggle("bad", empty); $("#" + er).textContent = empty ? msg : ""; if (empty && !bad) { $("#" + i).focus(); bad = true }
+  }
+  if (bad) return;
+  const go = $("#go"); go.disabled = true; go.textContent = "Создаём…";
+  try {
+    const body = { code: $("#code").value, lang: lang(), theme, ...collect() };
+    for (const k of ["event_type", "name1", "name2", "starts_at", "venue", "address", "message", "rsvp_by"]) body[k] = $("#" + k).value;
+    const r = await api("/api/certificates/redeem", { method: "POST", body });
+    store.set("edit:" + r.slug, r.edit_token);
+    $("#link").textContent = location.origin + r.url; $("#open").href = r.url;
+    $("#form").hidden = true; $("#done").hidden = false; say("");
+  } catch (err) { say(err.message, "bad"); go.disabled = false; state.scrollIntoView({ block: "center" }) }
+  go.textContent = "Создать приглашение";
+};
+</script></body></html>

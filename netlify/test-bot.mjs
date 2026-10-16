@@ -1,0 +1,30 @@
+// Локальная проверка логики бота без Telegram: node netlify/test-bot.mjs
+process.env.TG_BOT_TOKEN = "T"; process.env.TG_ADMIN_ID = "100";
+const sent = [];
+globalThis.fetch = async (url, o) => { const m = url.split("/").pop(); const b = JSON.parse(o.body); sent.push([m, b]); return { json: async () => ({ ok: !(m === "copyMessage" && b.chat_id === "999"), result: { message_id: 7 } }) }; };
+const { handle } = await import("./functions/tg.mjs");
+const user = { id: 555, first_name: "Ани", username: "ani_s" };
+const ok = (c, msg) => { if (!c) { console.error("FAIL", msg, JSON.stringify(sent, null, 1)); process.exit(1) } };
+
+await handle({ message: { message_id: 1, from: user, chat: { id: 555 }, text: "/start" } });
+ok(sent[0][0] === "sendMessage" && sent[0][1].chat_id === 555 && sent[0][1].reply_markup, "hello to user");
+ok(sent[1][1].chat_id === "100" && sent[1][1].text.includes("#u555"), "admin notified of new user");
+sent.length = 0;
+await handle({ message: { message_id: 2, from: user, chat: { id: 555 }, text: "Свадьба 12 июня, 180 гостей" } });
+ok(sent[0][1].chat_id === "100" && sent[0][1].text.includes("Ани @ani_s #u555") && sent[0][1].text.includes("180 гостей"), "text relayed to admin");
+ok(sent[1][1].chat_id === 555, "user gets ack");
+sent.length = 0;
+await handle({ message: { message_id: 3, from: user, chat: { id: 555 }, photo: [{}], caption: "вот платье" } });
+ok(sent[0][0] === "copyMessage" && sent[0][1].caption.includes("#u555"), "photo copied with tag");
+sent.length = 0;
+const admin = { id: 100, first_name: "Григор" };
+await handle({ message: { message_id: 10, from: admin, chat: { id: 100 }, text: "Здравствуйте, Ани! Пришлём пример.", reply_to_message: { text: "Ани @ani_s #u555\n\nСвадьба..." } } });
+ok(sent[0][0] === "copyMessage" && sent[0][1].chat_id === "555" && sent[0][1].message_id === 10, "admin reply copied to user");
+ok(sent[1][1].text === "Отправлено", "admin gets confirmation");
+sent.length = 0;
+await handle({ message: { message_id: 11, from: admin, chat: { id: 100 }, text: "привет" } });
+ok(sent[0][1].text.includes("реплай"), "admin hint when not replying");
+sent.length = 0;
+await handle({ message: { message_id: 12, from: admin, chat: { id: 100 }, text: "ответ", reply_to_message: { caption: "вот платье\n\nАни #u999" } } });
+ok(sent[1][1].text.startsWith("Не доставлено"), "blocked user reported");
+console.log("bot ok: 8 checks");

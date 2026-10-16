@@ -1,0 +1,44 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Кабинет партнёра · SEGHAN</title><meta name="robots" content="noindex"><link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,400&family=Golos+Text:wght@400;600&family=Noto+Serif+Armenian:wght@300;400&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="/static/app.css"></head><body>
+<div class="wrap stack" style="gap:28px">
+  <div class="top"><a class="brand" href="/">SEGHAN<small lang="hy">սեղան</small></a><button class="btn ghost sm" id="out" type="button" hidden>Выйти</button></div>
+  <form id="login" class="panel stack narrow" novalidate>
+    <h1>Кабинет партнёра</h1>
+    <p class="mute">Ключ доступа вы получили вместе с пакетом сертификатов.</p>
+    <div class="f" id="fkey"><label for="key">Ключ партнёра</label><input id="key" class="mono" type="password" autocomplete="current-password" placeholder="sgn_…"><span class="err" id="kerr" role="alert"></span></div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+  <main id="app" class="stack" style="gap:36px" hidden>
+    <div class="stack" style="gap:6px"><p class="eyebrow"><span class="pill ok"><i class="dot"></i>данные обновляются</span></p><h1 id="pname"></h1></div>
+    <div class="stats" id="stats"></div>
+    <section class="stack"><h2>Приглашения ваших клиентов</h2>
+      <p class="mute">Каждый гость, открывший приглашение, видит строку «Подарок от» с вашим названием. Имена гостей видят только хозяева события.</p>
+      <div class="tw"><table><thead><tr><th>Свадьба</th><th class="n">Открыли</th><th class="n">Взр.</th><th class="n">Дет.</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div id="empty" class="empty" hidden>Пока ни один сертификат не активирован. Вручите карточку клиенту, и после активации приглашение появится здесь.</div>
+    </section>
+    <section class="stack"><h2>Сертификаты</h2><div class="tw"><table><thead><tr><th>Код</th><th>Статус</th><th>Активирован</th></tr></thead><tbody id="certs"></tbody></table></div></section>
+  </main>
+</div>
+<script src="/static/common.js"></script>
+<script>
+const EV = { wedding: "Свадьба", christening: "Крестины", anniversary: "Юбилей", engagement: "Помолвка", birthday: "День рождения" };
+const dts = iso => new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", timeZone: "Asia/Yerevan" }).format(new Date(iso));
+const dt = iso => new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeZone: "Asia/Yerevan" }).format(new Date(iso));
+let key = store.get("pkey"), poll;
+async function load() {
+  const [me, certs] = await Promise.all([api("/api/partner/me", { key }), api("/api/partner/certificates", { key })]);
+  $("#login").hidden = true; $("#app").hidden = false; $("#out").hidden = false;
+  $("#pname").textContent = me.partner.name;
+  const c = me.certificates, r = me.reach;
+  $("#stats").innerHTML = [["Сертификатов в пакете", c.total], ["Активировано", c.activated], ["Осталось вручить", c.issued], ["Открытий приглашений", r.views], ["Гостей придёт", r.guests]].map(([l, v]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+  $("#rows").innerHTML = me.invitations.map(i => `<tr><td>${esc(i.names)}<br><span class="mute">${dts(i.starts_at)}</span></td><td class="n">${i.views}</td><td class="n">${i.adults}</td><td class="n">${i.children}</td></tr>`).join("");
+  $("#empty").hidden = me.invitations.length > 0;
+  $("#certs").innerHTML = certs.map(x => `<tr><td class="mono">SGN-····-${esc(x.hint.slice(1))}</td><td><span class="pill ${x.status === "activated" ? "ok" : "warn"}">${x.status === "activated" ? "активирован" : "ждёт клиента"}</span></td><td>${x.activated_at ? dt(x.activated_at) : ""}</td></tr>`).join("");
+}
+const start = async () => { try { await load(); clearInterval(poll); poll = setInterval(() => load().catch(() => {}), 20000) } catch (e) { $("#fkey").classList.add("bad"); $("#kerr").textContent = e.message; store.del("pkey") } };
+$("#login").onsubmit = e => { e.preventDefault(); key = $("#key").value.trim(); if (!key) { $("#kerr").textContent = "Введите ключ"; return } store.set("pkey", key); start() };
+$("#out").onclick = () => { store.del("pkey"); location.reload() };
+if (key) start();
+</script></body></html>
