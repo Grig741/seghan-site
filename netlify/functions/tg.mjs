@@ -68,7 +68,8 @@ export async function handle(update) {
 
 export default async (req) => {
   if (req.method !== "POST") {
-    if (new URL(req.url).searchParams.get("check") !== "1") return new Response("SEGHAN bot", { status: 200 });
+    const q = new URL(req.url).searchParams;
+    if (q.get("check") !== "1" || !process.env.TG_WEBHOOK_SECRET || q.get("key") !== process.env.TG_WEBHOOK_SECRET) return new Response("SEGHAN bot", { status: 200 });
     const t = process.env.TG_BOT_TOKEN || "";
     const me = t ? await tg("getMe", {}) : { ok: false, description: "TG_BOT_TOKEN пустой" };
     const sent = t ? await tg("sendMessage", { chat_id: ADMIN(), text: "Проверка: бот может писать вам." }) : {};
