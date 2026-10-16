@@ -106,10 +106,27 @@ document.addEventListener("click", async e => {
   if (d) { await api(`/api/invitations/${slug}/guests/${d.dataset.del}`, { method: "DELETE", headers: H() }).catch(() => {}); loadManage() }
   if (f) { filter = f.id.slice(2); document.querySelectorAll(".seg2 button").forEach(x => x.setAttribute("aria-pressed", x === f)); renderList() }
 });
+function mountLite(inv) {
+  document.title = inv.name1 + (inv.name2 ? " & " + inv.name2 : "");
+  HRV.mount({
+    event_type: "wedding", lang: inv.lang, langs: [inv.lang, ...["hy", "ru", "en"].filter(l => l !== inv.lang)], theme: inv.theme, n1: inv.name1, n2: inv.name2, starts_at: inv.starts_at,
+    venue: inv.venue, address: inv.address, story: inv.story, program: inv.program, note: inv.message, rsvp_by: inv.rsvp_by,
+    gift_from: inv.gift_from, cta_url: "/?from=invite"
+  }, {
+    root: document.getElementById("app"), storageKey: "hrv-" + slug,
+    onRsvp: p => api(`/.netlify/functions/inv?slug=${encodeURIComponent(slug)}&rsvp=1`, { method: "POST", body: { guest_key: gk(), name: p.name, attending: p.attending, guests: p.guests, children: p.children || 0 } })
+  });
+}
 (async () => {
   let inv;
   try { inv = await api(`/api/invitations/${slug}${gtok ? "?g=" + encodeURIComponent(gtok) : ""}`) }
-  catch { document.getElementById("app").innerHTML = '<div class="miss"><h1>Приглашение не найдено</h1><p>Проверьте ссылку или попросите хозяев события прислать её ещё раз.</p></div>'; return }
+  catch {
+    // режим без бэкенда: приглашение из Netlify Blobs, ответы гостей уходят в Telegram
+    let lite = null;
+    try { lite = await api(`/.netlify/functions/inv?slug=${encodeURIComponent(slug)}`) } catch {}
+    if (lite) return mountLite(lite);
+  }
+  if (!inv) { document.getElementById("app").innerHTML = '<div class="miss"><h1>Приглашение не найдено</h1><p>Проверьте ссылку или попросите хозяев события прислать её ещё раз.</p></div>'; return }
   document.title = inv.name1 + (inv.name2 ? " & " + inv.name2 : "");
   HRV.mount({
     event_type: inv.event_type, lang: inv.lang, theme: inv.theme, n1: inv.name1, n2: inv.name2, starts_at: inv.starts_at,

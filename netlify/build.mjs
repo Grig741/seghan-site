@@ -24,6 +24,6 @@ if (BACKEND) {
   lines.push(`/api/orders  /.netlify/functions/orders  200`, `/api/visits  /.netlify/functions/orders  200`, `/i/*  /invite.html  200`);
 }
 lines.push("/business  /business.html  200", "/privacy  /privacy.html  200", "/gift/*  /gift.html  200", "/gift  /gift.html  200",
-  "/partner  /partner.html  200", "/admin  /admin.html  200", "/favicon.ico  /static/favicon.svg  200");
+  "/partner  /partner.html  200", "/admin  /admin.html  200", "/make  /make.html  200", "/favicon.ico  /static/favicon.svg  200");
 writeFileSync("dist/_redirects", lines.join("\n") + "\n");
 console.log(`SEGHAN build: bot @${BOT}, backend ${BACKEND || "нет (заявки в Telegram)"}`);
