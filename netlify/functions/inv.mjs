@@ -22,11 +22,15 @@ export default async (req) => {
   if (req.method === "GET") {
     if (!slug) return json({ detail: "Нет ссылки" }, 400);
     if (u.searchParams.get("list") === "1") {
-      if (!auth(req)) return json({ detail: "Неверный ключ" }, 403);
+      const d = await inv.get(slug, { type: "json" });
+      const k = req.headers.get("x-key") || "";
+      if (!d || !(auth(req) || (d.owner && k === d.owner))) return json({ detail: "Неверный ключ" }, 403);
       return json((await ans.get(slug, { type: "json" })) || []);
     }
     const d = await inv.get(slug, { type: "json" });
-    return d ? json(d) : json({ detail: "Приглашение не найдено" }, 404);
+    if (!d) return json({ detail: "Приглашение не найдено" }, 404);
+    const { owner, ...pub } = d;
+    return json(pub);
   }
   if (req.method !== "POST") return json({ detail: "Метод не поддерживается" }, 405);
   const b = await req.json().catch(() => null);
@@ -60,8 +64,9 @@ export default async (req) => {
     rsvp_by: str(b.rsvp_by, 10), gift_from: str(b.gift_from, 80),
     story: (Array.isArray(b.story) ? b.story : []).slice(0, 6).map(x => ({ year: str(x.year, 12), title: str(x.title, 80), text: str(x.text, 400), icon: str(x.icon, 12) })),
     program: (Array.isArray(b.program) ? b.program : []).slice(0, 8).map(x => ({ time: str(x.time, 5), title: str(x.title, 80), place: str(x.place, 120) })),
+    owner: crypto.randomUUID().replace(/-/g, "").slice(0, 16),
     created: new Date().toISOString()
   };
   await inv.setJSON(s, d);
-  return json({ ok: true, slug: s, url: "/i/" + s });
+  return json({ ok: true, slug: s, url: "/i/" + s, host_url: "/i/" + s + "?k=" + d.owner });
 };

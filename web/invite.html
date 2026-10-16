@@ -107,6 +107,9 @@ document.addEventListener("click", async e => {
   if (f) { filter = f.id.slice(2); document.querySelectorAll(".seg2 button").forEach(x => x.setAttribute("aria-pressed", x === f)); renderList() }
 });
 function mountLite(inv) {
+  const k0 = new URLSearchParams(location.search).get("k");
+  if (k0) { store.set("host:" + slug, k0); history.replaceState(null, "", location.pathname) }
+  const hk = store.get("host:" + slug);
   document.title = inv.name1 + (inv.name2 ? " & " + inv.name2 : "");
   HRV.mount({
     event_type: "wedding", lang: inv.lang, langs: [inv.lang, ...["hy", "ru", "en"].filter(l => l !== inv.lang)], theme: inv.theme, n1: inv.name1, n2: inv.name2, starts_at: inv.starts_at,
@@ -114,8 +117,26 @@ function mountLite(inv) {
     gift_from: inv.gift_from, cta_url: "/?from=invite"
   }, {
     root: document.getElementById("app"), storageKey: "hrv-" + slug,
-    onRsvp: p => api(`/.netlify/functions/inv?slug=${encodeURIComponent(slug)}&rsvp=1`, { method: "POST", body: { guest_key: gk(), name: p.name, attending: p.attending, guests: p.guests, children: p.children || 0 } })
+    onRsvp: p => api(`/.netlify/functions/inv?slug=${encodeURIComponent(slug)}&rsvp=1`, { method: "POST", body: { guest_key: gk(), name: p.name, attending: p.attending, guests: p.guests, children: p.children || 0 } }).then(() => hk && hostLite(hk))
   });
+  if (hk) hostLite(hk);
+}
+async function hostLite(hk) {
+  let list;
+  try { list = await api(`/.netlify/functions/inv?slug=${encodeURIComponent(slug)}&list=1`, { headers: { "x-key": hk } }) }
+  catch (e) { if (e.status === 403) store.del("host:" + slug); return }
+  let box = document.getElementById("hostlite");
+  if (!box) { box = document.createElement("section"); box.id = "hostlite"; box.className = "mg"; document.getElementById("app").after(box) }
+  const yes = list.filter(x => x.attending), no = list.filter(x => !x.attending);
+  const ad = yes.reduce((s, x) => s + x.guests, 0), ch = yes.reduce((s, x) => s + x.children, 0);
+  const row = x => `<tr><td>${esc(x.name)}</td><td class="mute">${x.attending ? "придёт" : "не сможет"}</td><td class="n">${x.attending ? x.guests + (x.children ? " + " + x.children + " дет." : "") : "—"}</td></tr>`;
+  box.innerHTML = `<p class="mute" style="margin:0">Видно только вам</p><h2>Ответы гостей</h2>
+    <div class="st"><div><b>${ad}</b><span>взрослых</span></div><div><b>${ch}</b><span>детей</span></div><div><b>${no.length}</b><span>не смогут</span></div><div><b>${list.length}</b><span>ответов</span></div></div>
+    <p class="kit">Для зала: <b>${ad + ch}</b> гостей${ch ? ` (из них детей ${ch})` : ""}</p>
+    ${list.length ? `<table><tbody>${[...yes, ...no].map(row).join("")}</tbody></table>` : `<p class="mute" style="margin:0">Пока никто не ответил. Отправьте ссылку гостям, ответы появятся здесь.</p>`}
+    <div class="row"><button type="button" id="hlcopy">Скопировать ссылку для гостей</button><button type="button" id="hlre">Обновить</button></div>`;
+  document.getElementById("hlcopy").onclick = e => copyText(location.origin + location.pathname, e.currentTarget);
+  document.getElementById("hlre").onclick = () => hostLite(hk);
 }
 (async () => {
   let inv;

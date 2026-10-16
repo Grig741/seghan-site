@@ -37,8 +37,10 @@
   </form>
   <div id="done" class="panel stack" hidden>
     <h2>Приглашение готово</h2>
-    <p class="mute">Отправьте ссылку паре, а они разошлют её гостям. Каждый ответ гостя придёт вам в Telegram с общим числом гостей.</p>
+    <p class="mute">Первая ссылка для гостей. Вторую отправьте только паре: открыв её, они видят список ответов под приглашением. Каждый ответ также придёт вам в Telegram.</p>
     <div class="row"><code class="key" id="link"></code><button class="btn ghost sm" type="button" id="copy">Скопировать</button></div>
+    <p class="eyebrow" style="margin:8px 0 0">Ссылка для пары: на ней видно, кто ответил и сколько придёт</p>
+    <div class="row"><code class="key" id="hlink"></code><button class="btn ghost sm" type="button" id="hcopy">Скопировать</button></div>
     <a class="btn" id="open" href="#" target="_blank" rel="noopener">Открыть приглашение</a>
     <a class="btn ghost" id="wa" href="#" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <button class="btn ghost" type="button" id="more">Сделать ещё одно</button>
@@ -87,6 +89,7 @@ const say = (text, kind = "") => { state.hidden = !text; state.className = "msg 
 $("#code").value = store.get("mk") || "";
 $("#more").onclick = () => location.reload();
 $("#copy").onclick = e => copyText($("#link").textContent, e.currentTarget);
+$("#hcopy").onclick = e => copyText($("#hlink").textContent, e.currentTarget);
 $("#form").onsubmit = async e => {
   e.preventDefault();
   let bad = false;
@@ -103,7 +106,8 @@ $("#form").onsubmit = async e => {
     store.set("mk", $("#code").value.trim());
     const full = location.origin + r.url;
     $("#link").textContent = full; $("#open").href = r.url;
-    $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(`Ваше приглашение готово: ${full}`);
+    $("#hlink").textContent = location.origin + r.host_url;
+    $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(`Ваше приглашение готово!\n\nДля гостей: ${full}\n\nДля вас (видно, кто ответил и сколько придёт, никому не пересылайте): ${location.origin + r.host_url}`);
     $("#form").hidden = true; $("#done").hidden = false; say("");
   } catch (err) { if (err.status === 403) { store.del("mk"); $("#fcode").classList.add("bad"); $("#ecode").textContent = "Неверный ключ" } say(err.message, "bad"); go.disabled = false; state.scrollIntoView({ block: "center" }) }
   go.textContent = "Создать приглашение";
