@@ -25,5 +25,6 @@ if (BACKEND) {
 }
 lines.push("/business  /business.html  200", "/privacy  /privacy.html  200", "/gift/*  /gift.html  200", "/gift  /gift.html  200",
   "/partner  /partner.html  200", "/admin  /admin.html  200", "/make  /make.html  200", "/favicon.ico  /static/favicon.svg  200");
+for (const f of ["robots.txt", "sitemap.xml"]) cpSync(`web/${f}`, `dist/${f}`);
 writeFileSync("dist/_redirects", lines.join("\n") + "\n");
 console.log(`SEGHAN build: bot @${BOT}, backend ${BACKEND || "нет (заявки в Telegram)"}`);

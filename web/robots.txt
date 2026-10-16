@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /i/
+Disallow: /make
+Disallow: /admin
+Disallow: /partner
+Disallow: /gift
+
+Sitemap: https://seghan.netlify.app/sitemap.xml
